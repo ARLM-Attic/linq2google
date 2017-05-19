@@ -91,16 +91,18 @@ namespace GLinq
 
             #endregion
 
-            public override object GetValue(QueryStringParamAttribute descriptor)
+            public override object GetValue(Mapping.PropertyMapping descriptor)
             {
-                XElement currentEntry = _feed.Descendants("{http://www.w3.org/2005/Atom}entry").ElementAt(_currentEntry);
-                ItemAttributeAttribute itemDescriptor = descriptor as ItemAttributeAttribute;
-                if (itemDescriptor != null)
-                {
-                    XElement propElement = currentEntry.Element(XName.Get(itemDescriptor.Name, itemDescriptor.TargetNamespace));
-                    return propElement.Value;
-                }
-                return "hello";
+                //Find the current element (by number)
+                XName descendantName = XName.Get(descriptor.Owner.ElementName, descriptor.Owner.TargetNamespace);
+                XElement currentEntry = _feed.Descendants(descendantName).ElementAt(_currentEntry);
+
+                //Find the element that matches the property
+                XName name = XName.Get(descriptor.ElementName, descriptor.ElementNamespace);
+                XElement propElement = currentEntry.Element(name);
+                if(propElement == null)
+                    throw new Exception(String.Format("The element {0} could not be found in the response xml", name.ToString()));
+                return propElement.Value;                
             }
         }
     }

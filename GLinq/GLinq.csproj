@@ -55,9 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AtomEntry.cs" />
+    <Compile Include="IResponseItemAttribute.cs" />
     <Compile Include="WebProjectionReader.cs" />
-    <Compile Include="BaseQueryAttribute.cs" />
     <Compile Include="Evaluator.cs" />
     <Compile Include="ExpressionVisitor.cs" />
     <Compile Include="Mapping\PropertyMapping.cs" />

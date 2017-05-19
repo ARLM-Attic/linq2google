@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Reflection;
-
+using GLinq.Mapping;
 
 namespace GLinq
 {
@@ -55,45 +55,24 @@ namespace GLinq
             return member.Name;
         }
 
-        private Type GetQueryParamType(MemberInfo member)
-        {
-            FieldInfo fi = member as FieldInfo;
-            if (fi != null)
-            {
-                return fi.FieldType;
-            }
-            PropertyInfo pi = (PropertyInfo)member;
-            return pi.PropertyType;
-        }
-
         private Dictionary<object, MemberInfo> GetMappedMembers(Type rowType)
         {
-            Dictionary<object, MemberInfo> members = new Dictionary<object, MemberInfo>();
-            while (rowType != typeof(object))
+            Dictionary<object, MemberInfo> members = new Dictionary<object, MemberInfo>();            
+            foreach (PropertyMapping info in rowType.GetMapping().Properties)
             {
-                foreach (PropertyInfo info in rowType.GetProperties())
+                if (info.ParamAttributes.Count > 0)
                 {
-                    object[] queryStringAttr = info.GetCustomAttributes(typeof(QueryStringParamAttribute), true);
-                    object[] urlAttr = info.GetCustomAttributes(typeof(UrlAttribute), true);
-                    List<System.ComponentModel.TypeConverterAttribute> converters =
-                        new List<System.ComponentModel.TypeConverterAttribute>(info.GetCustomAttributes(typeof(System.ComponentModel.TypeConverterAttribute), true).Cast<System.ComponentModel.TypeConverterAttribute>());
-                    if (queryStringAttr.Length > 0)
-                    {
-                        string paramName = this.GetQueryParamName(info, (QueryStringParamAttribute)queryStringAttr[0]);
-                        Type paramType = this.GetQueryParamType(info);
-                        QueryParamDeclaration param = new QueryParamDeclaration(paramName, new QueryParamExpression(paramType, paramName, (QueryStringParamAttribute)queryStringAttr[0], converters.AsReadOnly()));
-                        members.Add(param, info);
-                    }
-                    if (urlAttr.Length > 0)
-                    {
-                        string key = info.Name;
-                        string defaultValue = ((UrlAttribute)urlAttr[0]).DefaultValue;
-                        Type paramType = this.GetQueryParamType(info);
-                        UrlParamDeclaration param = new UrlParamDeclaration(key, defaultValue, new UrlParamExpression(paramType, key, defaultValue));
-                        members.Add(param, info);
-                    }
+                    Type paramType = info.PropertyInfo.PropertyType;
+                    QueryParamDeclaration param = new QueryParamDeclaration(info.ElementName, new QueryParamExpression(paramType, info));
+                    members.Add(param, info.PropertyInfo);
                 }
-                rowType = rowType.BaseType;
+                if (info.UrlAttributes.Count > 0)
+                {
+                    string defaultValue = ((UrlAttribute)info.UrlAttributes[0]).DefaultValue;
+                    Type paramType = info.PropertyInfo.PropertyType;
+                    UrlParamDeclaration param = new UrlParamDeclaration(info.UrlVariableName, defaultValue, new UrlParamExpression(paramType, info, defaultValue));
+                    members.Add(param, info.PropertyInfo);
+                }
             }
             return members;
         }
@@ -165,7 +144,7 @@ namespace GLinq
             MemberInfo member = ((MemberExpression)lambda.Body).Member;
             ProjectionExpression projection = (ProjectionExpression)this.Visit(source);
             ProjectedQueryParams pqp = this.ProjectQueryParams(projection.Projector);
-            return new ProjectionExpression(new OrderByExpression(resultType, projection.Source, member, direction, GetFeedAttribute(elementType)), pqp.Projector);
+            return new ProjectionExpression(new OrderByExpression(resultType, projection.Source, direction, elementType.GetMapping().GetProperty(member)), pqp.Projector);
         }
 
         private Expression Take(Type resultType, Expression source)

@@ -89,11 +89,11 @@ namespace GLinq
             else
                 value = b.Right as ConstantExpression;
 
-            if (!_queryString.ContainsKey(qp.Name))
-                _queryString.Add(qp.Name, new StringBuilder());
+            if (!_queryString.ContainsKey(qp.Descriptor.ParameterName))
+                _queryString.Add(qp.Descriptor.ParameterName, new StringBuilder());
 
-            _currentQueryParam = _queryString[qp.Name];
-            _currentQueryParam.Append(qp.Descriptor.FormatQueryStringItem(value.Value.ToString(), b.Operator));
+            _currentQueryParam = _queryString[qp.Descriptor.ParameterName];
+            _currentQueryParam.Append(qp.Descriptor.ParamAttributes[0].FormatQueryStringItem(value.Value.ToString(), b.Operator));
 
             return b;
         }
@@ -145,7 +145,7 @@ namespace GLinq
             if (orderby.Source != null)
                 Visit(orderby.Source);
 
-            Dictionary<string, StringBuilder> orderbyParams = orderby.FeedDescriptor.FormatSortBy(orderby.Member.Name, orderby.Direction);
+            Dictionary<string, StringBuilder> orderbyParams = orderby.Descriptor.Owner.Feed.FormatSortBy(orderby.Descriptor.ParamAttributes[0].FormatOrderByName(), orderby.Direction);
 
             _queryString = orderbyParams.Union(_queryString.Where(x => !orderbyParams.ContainsKey(x.Key))).
                 ToDictionary(x => x.Key, y => y.Value);
@@ -160,7 +160,7 @@ namespace GLinq
         }
         protected override Expression VisitQueryParam(QueryParamExpression queryParam)
         {
-            sb.Append(queryParam.Name);
+            sb.Append(queryParam.Descriptor.ParameterName);
             sb.Append("=");
             return queryParam;
         }

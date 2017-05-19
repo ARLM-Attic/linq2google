@@ -31,5 +31,11 @@ namespace GLinq.Syndication
             return false;
         }
     }
-    
+    public static class FeedItemMapping
+    {
+        public static QueryMapping GetMapping(this FeedItem item)
+        {
+            return item.GetType().GetMapping();
+        }
+    }
 }

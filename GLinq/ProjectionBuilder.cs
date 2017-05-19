@@ -32,7 +32,7 @@ namespace GLinq
                     miGetValue,
                     Expression.Constant(queryParam.Descriptor));
 
-            foreach (System.ComponentModel.TypeConverterAttribute converterAttr in queryParam.Converters)
+            foreach (System.ComponentModel.TypeConverterAttribute converterAttr in queryParam.Descriptor.ConverterAttributes)
             {
                 Type converterType = Type.GetType(converterAttr.ConverterTypeName);
                 getValue = Expression.Condition(

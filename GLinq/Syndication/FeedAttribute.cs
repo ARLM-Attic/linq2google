@@ -26,7 +26,19 @@ namespace GLinq
             get { return _defaultParameterName; }
             set { _defaultParameterName = value; }
         }
-
+        
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+        private string _targetNamespace;
+        public string TargetNamespace
+        {
+            get { return _targetNamespace; }
+            set { _targetNamespace = value; }
+        }
 
         public Dictionary<string, StringBuilder> FormatSortBy(string value, SortDirection direction)
         {

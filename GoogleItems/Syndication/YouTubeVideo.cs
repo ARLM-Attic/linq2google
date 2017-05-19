@@ -5,10 +5,10 @@ using System.Text;
 using GLinq;
 using System.ServiceModel.Syndication;
 
-namespace GoogleItems
+namespace GoogleItems.Syndication
 {
     [Feed(BaseUri = "http://gdata.youtube.com", UriTemplate = "feeds/api/videos")]
-    public class YouTubeVideo : AtomEntry
+    public class YouTubeVideo : GLinq.Syndication.FeedItem
     {
         private string _userName;
         [Url(DefaultValue = "scobrown")]
@@ -19,7 +19,7 @@ namespace GoogleItems
         }
 
         private string _vq;
-        [BaseQuery(ParameterName="vq")]
+        [QueryStringParam(ParameterName="vq")]
         public string VideoQuery
         {
             get { return _vq; }

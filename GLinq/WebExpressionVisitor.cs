@@ -51,7 +51,7 @@ namespace GLinq
         {
             Expression source = this.Visit(orderby.Source);
             if (source != orderby.Source)
-                return new OrderByExpression(orderby.Type, source, orderby.Member, orderby.Direction, orderby.FeedDescriptor);
+                return new OrderByExpression(orderby.Type, source, orderby.Direction, orderby.Descriptor);
             return orderby;
         }
         protected virtual Expression VisitUri(UriExpression uri)

@@ -7,6 +7,6 @@ namespace GLinq
 {
     public abstract class ProjectionRow
     {
-        public abstract object GetValue(QueryStringParamAttribute descriptor);
+        public abstract object GetValue(Mapping.PropertyMapping descriptor);
     }
 }

@@ -24,7 +24,8 @@ namespace ConsoleTest
             Console.WriteLine("Execute a search using the WebRequest classes");
             GoogleItems.GoogleContext gc = new GoogleItems.GoogleContext(key);
             var r = from ipods in gc.products
-                    where ipods.BaseQuery == "mp3 players" && ipods.Brand == "apple" && ipods.FeedType == "snippets"
+                    where ipods.BaseQuery == "mp3 players" && ipods.Brand == "apple" && ipods.FeedType == "snippets" && ipods.Price < 200
+                    orderby ipods.Price
                     select new { ipods.Title, ipods.Price };
 
             foreach (var product in r.Skip(10).Take(100))
@@ -68,12 +69,12 @@ namespace ConsoleTest
         }
         private void YouTubeTest()
         {
-            GoogleItems.YouTubeContext gc = new GoogleItems.YouTubeContext();
+            GoogleItems.Syndication.YouTubeContext gc = new GoogleItems.Syndication.YouTubeContext();
             var r = from videos in gc.videos
                     where videos.VideoQuery == "dog" && videos.VideoQuery == "cat"
                     select videos;
 
-            foreach (GoogleItems.YouTubeVideo video in r.Take(2))
+            foreach (GoogleItems.Syndication.YouTubeVideo video in r.Take(2))
             {
                 Console.WriteLine("{0}", video.Title);
             }

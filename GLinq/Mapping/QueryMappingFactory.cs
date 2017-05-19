@@ -10,24 +10,12 @@ namespace GLinq.Mapping
     {
         private static Dictionary<Type, QueryMapping> maps = new Dictionary<Type, QueryMapping>();
 
-        public static QueryMapping GetMapping(this object item)
+        public static QueryMapping GetMapping(this Type item)
         {
-            Type type = item.GetType();
-            if (!maps.ContainsKey(type))
-                maps[type] = CreateMap(type);
+            if (!maps.ContainsKey(item))
+                maps[item] = new QueryMapping(item);
 
-            return maps[type];
-        }
-        private static QueryMapping CreateMap(Type type)
-        {
-            List<PropertyMapping> props = new List<PropertyMapping>();
-            foreach (PropertyInfo pi in type.GetProperties())
-            {
-                PropertyMapping prop = new PropertyMapping(pi);
-                props.Add(prop);
-            }
-
-            return new QueryMapping(type, props);
+            return maps[item];
         }
     }
 }

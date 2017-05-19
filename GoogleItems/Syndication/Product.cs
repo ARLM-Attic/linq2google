@@ -14,7 +14,7 @@ namespace GoogleItems.Syndication
     public class Product : GLinq.Syndication.FeedItem
     {
         private string _brand;
-        [ItemAttribute(Name = "brand", TargetNamespace = "http://base.google.com/ns/1.0")]
+        [ItemAttribute(ElementName = "brand", ElementNamespace = "http://base.google.com/ns/1.0")]
         public string Brand
         {
             get { return _brand; }
@@ -23,7 +23,7 @@ namespace GoogleItems.Syndication
 
         private float _price;
         [System.ComponentModel.TypeConverter(typeof(FloatUsdConverter))]
-        [ItemAttribute(Name = "price", TargetNamespace = "http://base.google.com/ns/1.0", ItemType = "float usd", ParameterName = "bq")]
+        [ItemAttribute(ElementName = "price", ElementNamespace = "http://base.google.com/ns/1.0", ItemType = "float usd", ParameterName = "bq")]
         public float Price
         {
             get { return _price; }
@@ -31,7 +31,7 @@ namespace GoogleItems.Syndication
         }
 
         private string _itemType;
-        [ItemAttribute(Name = "item_type", TargetNamespace = "http://base.google.com/ns/1.0")]
+        [ItemAttribute(ElementName = "item_type", ElementNamespace = "http://base.google.com/ns/1.0")]
         public string ItemType
         {
             get { return _itemType; }
@@ -39,7 +39,7 @@ namespace GoogleItems.Syndication
         }
 
         private string _itemLanguage;
-        [ItemAttribute(Name = "item_language", TargetNamespace = "http://base.google.com/ns/1.0")]
+        [ItemAttribute(ElementName = "item_language", ElementNamespace = "http://base.google.com/ns/1.0")]
         public string ItemLanguage
         {
             get { return _itemLanguage; }
@@ -48,7 +48,7 @@ namespace GoogleItems.Syndication
 
         private DateTime _expirationDate;
         [System.ComponentModel.TypeConverter(typeof(System.ComponentModel.DateTimeConverter))]
-        [ItemAttribute(Name = "expiration_date", TargetNamespace = "http://base.google.com/ns/1.0")]
+        [ItemAttribute(ElementName = "expiration_date", ElementNamespace = "http://base.google.com/ns/1.0")]
         public DateTime ExpirationDate
         {
             get { return _expirationDate; }
@@ -64,7 +64,7 @@ namespace GoogleItems.Syndication
         }
 
         private string _bq;
-        [BaseQuery(ParameterName = "bq")]
+        [QueryStringParam(ParameterName = "bq")]
         public string BaseQuery
         {
             get { return _bq; }

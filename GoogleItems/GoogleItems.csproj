@@ -48,14 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GoogleBase.cs" />
     <Compile Include="GoogleContext.cs" />
+    <Compile Include="ItemAttributeAttribute.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Syndication\GoogleContext.cs" />
     <Compile Include="Syndication\Product.cs" />
-    <Compile Include="YouTubeContext.cs" />
-    <Compile Include="YouTubeVideo.cs" />
+    <Compile Include="Syndication\YouTubeVideo.cs" />
+    <Compile Include="Syndication\YouTubeContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GLinq\GLinq.csproj">

@@ -63,10 +63,10 @@ namespace GLinq
                         return mapped;
 
                     int ordinal = _queryParams.Count;
-                    _queryParams.Add(new QueryParamDeclaration(param.Name, param));
-                    mapped = new QueryParamExpression(param.Type, param.Name, param.Descriptor, param.Converters);
+                    _queryParams.Add(new QueryParamDeclaration(param.Descriptor.ParameterName, param));
+                    mapped = new QueryParamExpression(param.Type, param.Descriptor);
                     _map[param] = mapped;
-                    _paramNames.Add(param.Name);
+                    _paramNames.Add(param.Descriptor.ParameterName);
                     return mapped;
                 }
                 else

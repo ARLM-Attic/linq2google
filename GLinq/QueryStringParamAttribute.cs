@@ -9,13 +9,16 @@ namespace GLinq
     public class QueryStringParamAttribute : Attribute
     {
         private string _name;
-        public string ParameterName
+        public virtual string ParameterName
         {
             get { return _name; }
             set { _name = value; }
         }
 
-
+        public virtual string FormatOrderByName()
+        {
+            return ParameterName;
+        }
         public virtual string FormatQueryStringItem(string value, ExpressionType operType)
         {
             return value;

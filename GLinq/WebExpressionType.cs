@@ -22,34 +22,28 @@ namespace GLinq
     internal class OrderByExpression : Expression
     {
         private Expression _source;
-        private MemberInfo _member;
         private SortDirection _direction;
-        private FeedAttribute _desc;
+        private Mapping.PropertyMapping _desc;
 
         internal Expression Source
         {
             get { return _source; }
         }
-        internal MemberInfo Member
-        {
-            get { return _member; }
-        }
         internal SortDirection Direction
         {
             get { return _direction; }
         }
-        internal FeedAttribute FeedDescriptor
+        internal Mapping.PropertyMapping Descriptor
         {
             get { return _desc; }
         }
 
-        internal OrderByExpression(Type type, Expression source, MemberInfo method, SortDirection direction, FeedAttribute desc)
+        internal OrderByExpression(Type type, Expression source, SortDirection direction, Mapping.PropertyMapping desc)
             : base((ExpressionType)WebExpressionType.OrderBy, type)
         {
             _source = source;
             _direction = direction;
             _desc = desc;
-            _member = method;
         }
     }
 
@@ -122,28 +116,17 @@ namespace GLinq
     internal class QueryParamExpression : Expression
     {
         private string _name;
-        private QueryStringParamAttribute _desc;
-        private ReadOnlyCollection<System.ComponentModel.TypeConverterAttribute> _converters;
+        private Mapping.PropertyMapping _desc;
 
-        internal string Name
-        {
-            get { return _name; }
-        }
-        internal QueryStringParamAttribute Descriptor
+        internal Mapping.PropertyMapping Descriptor
         {
             get { return _desc; }
         }
-        internal ReadOnlyCollection<System.ComponentModel.TypeConverterAttribute> Converters
-        {
-            get { return _converters; }
-        }
 
-        internal QueryParamExpression(Type type, string name, QueryStringParamAttribute desc, ReadOnlyCollection<System.ComponentModel.TypeConverterAttribute> converters)
+        internal QueryParamExpression(Type type, Mapping.PropertyMapping desc)
             : base((ExpressionType)WebExpressionType.QueryParam, type)
         {
-            _name = name;
             _desc = desc;
-            _converters = converters;
         }
     }
     internal class QueryParamDeclaration
@@ -169,23 +152,27 @@ namespace GLinq
 
     internal class UrlParamExpression : Expression
     {
-        private string _key;
         private string _default;
+        private Mapping.PropertyMapping _desc;
 
+        internal Mapping.PropertyMapping Descriptor
+        {
+            get { return _desc; }
+        }
         internal string Key
         {
-            get { return _key; }
+            get { return _desc.UrlVariableName; }
         }
         internal string Default
         {
             get { return _default; }
         }
 
-        internal UrlParamExpression(Type type, string key, string defaultValue)
+        internal UrlParamExpression(Type type, Mapping.PropertyMapping desc, string defaultValue)
             : base((ExpressionType)WebExpressionType.UrlParam, type)
         {
-            _key = key;
             _default = defaultValue;
+            _desc = desc;
         }
     }
     internal class UrlParamDeclaration

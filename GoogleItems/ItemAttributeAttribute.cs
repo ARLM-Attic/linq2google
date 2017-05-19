@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using GLinq;
 
-namespace GLinq
+namespace GoogleItems
 {
-    public class ItemAttributeAttr1ibute : QueryStringParamAttribute
+    public class ItemAttributeAttribute : QueryStringParamAttribute, IResponseItemAttribute
     {
         private string _itemType;
         public string ItemType
@@ -16,36 +17,29 @@ namespace GLinq
         }
 
         private string _targetNamespace;
-        public string TargetNamespace
+        public string ElementNamespace
         {
             get { return _targetNamespace; }
             set { _targetNamespace = value; }
         }
 
         private string _name;
-        public string Name
+        public string ElementName
         {
             get { return _name; }
             set { _name = value; }
         }
 
-        private string _useField;
-        public string Storage
-        {
-            get { return _useField; }
-            set { _useField = value; }
-        }
-
         public override string FormatOrderByName()
         {
-            string name = this.Name;
+            string name = this.ElementName;
             if (!String.IsNullOrEmpty(this.ItemType))
                 name += "(" + ItemType + ")";
             return name;
         }
         public override string FormatQueryStringItem(string value, ExpressionType operType)
         {
-            string name = this.Name;
+            string name = this.ElementName;
             if (!String.IsNullOrEmpty(this.ItemType))
                 name += "(" + ItemType + ")";
             

@@ -63,7 +63,7 @@ namespace GLinq
 
                     int ordinal = _urlParams.Count;
                     _urlParams.Add(new UrlParamDeclaration(param.Key, param.Default, param));
-                    mapped = new UrlParamExpression(param.Type, param.Key, param.Default);
+                    mapped = new UrlParamExpression(param.Type, param.Descriptor, param.Default);
                     _map[param] = mapped;
                     _paramNames.Add(param.Key);
                     return mapped;

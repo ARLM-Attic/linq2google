@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using GLinq;
 
-namespace GoogleItems
+namespace GoogleItems.Syndication
 {
     public class YouTubeContext : WebContext
     {
