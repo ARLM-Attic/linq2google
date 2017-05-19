@@ -12,13 +12,16 @@ namespace GoogleItems
 
         public GoogleContext(string googleKey)
         {
-            products = new Feed<Product>(this);
             Init(googleKey, "", "application/atom+xml", "GET");
         }
-
+        public GoogleContext(string googleKey, string auth)
+        {
+            Init(googleKey, auth, "application/atom+xml", "GET");
+        }
         private void Init(string googleKey, string auth, string contentType, string method)
         {
-            products.Info.CustomHeaders["Authorization"] = "AuthSub token=\"" + auth + "\"";
+            products = new Feed<Product>(this);
+            products.Info.CustomHeaders["Authorization"] = "GoogleLogin auth=\"" + auth + "\"";
             products.Info.CustomHeaders["X-Google-Key"] = "key=" + googleKey;
             products.Info.ContentType = contentType;
             products.Info.Method = method;
