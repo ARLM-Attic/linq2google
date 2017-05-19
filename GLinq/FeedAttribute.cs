@@ -25,5 +25,12 @@ namespace GLinq
                 _queryParser = value; 
             }
         }
+
+        private string _defaultParameterName = "";
+        public string DefaultParameterName
+        {
+            get { return _defaultParameterName; }
+            set { _defaultParameterName = value; }
+        }
     }
 }

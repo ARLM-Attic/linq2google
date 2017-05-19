@@ -9,10 +9,31 @@ namespace GLinq
     public class Feed<T> : IOrderedQueryable<T>, IQueryable<T>, IQueryProvider
     {
         private RestContext _context;
-        private QueryInfo _info;
+        private FeedInfo<T> _info;
         public QueryInfo Info
         {
             get { return _info; }
+        }
+
+        private string _id;
+        public string Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        private DateTime _updated;
+        public DateTime Updated
+        {
+            get { return _updated; }
+            set { _updated = value; }
+        }
+
+        private int _totalResults;
+        public int TotalResults
+        {
+            get { return _totalResults; }
+            set { _totalResults = value; }
         }
 
         public Feed(RestContext context)
@@ -24,10 +45,13 @@ namespace GLinq
                 FeedAttribute feedAttr = attrs[0] as FeedAttribute;
                 if(!string.IsNullOrEmpty(feedAttr.BaseURL))
                 {
-                    _info = new QueryInfo((IQueryParser)Activator.CreateInstance(feedAttr.QueryParser, feedAttr.BaseURL));
+                    if (!feedAttr.QueryParser.IsAssignableFrom(typeof(FeedParser)))
+                        throw new Exception("A QueryParser for a Feed must be derived from " + typeof(FeedParser).Name);
+                    _info = new FeedInfo<T>((IQueryParser)Activator.CreateInstance(feedAttr.QueryParser, feedAttr.BaseURL, typeof(T)));
+                    _info.Feed = this;
                 }
                 else
-                    throw new Exception("The BaseURL must be specified for attribute " + typeof(FeedAttribute).Name);
+                    throw new Exception("The BaseURL must be specified for attribute " + typeof(FeedAttribute).Name);                
             }
             else
                 throw new Exception("The type " + typeof(T).Name + " does not have an attribute of type " + typeof(FeedAttribute).Name);

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace GLinq
 {
-    public class BaseQueryAttribute : Attribute
+    public class BaseQueryAttribute : QueryStringParamAttribute
     {
     }    
 }

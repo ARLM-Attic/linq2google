@@ -9,7 +9,7 @@ namespace GoogleItems
     public class GoogleBase
     {
         private string _bq;
-        [BaseQuery]
+        [BaseQuery(ParameterName="bq")]
         public string BaseQuery
         {
             get { return _bq; }

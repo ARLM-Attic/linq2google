@@ -6,7 +6,7 @@ using GLinq;
 
 namespace GoogleItems
 {
-    [Feed(BaseURL = "http://www.google.com/base/feeds/snippets")]
+    [Feed(BaseURL = "http://www.google.com/base/feeds/FeedType", DefaultParameterName="bq")]
     public class Product : GoogleBase
     {
         private string _id;
@@ -34,7 +34,7 @@ namespace GoogleItems
         }
 
         private string _price;
-        [ItemAttribute(Name = "price", TargetNamespace = "http://base.google.com/ns/1.0", Storage = "_price", ItemType = "float usd")]
+        [ItemAttribute(Name = "price", TargetNamespace = "http://base.google.com/ns/1.0", Storage = "_price", ItemType = "float usd", ParameterName="bq")]
         public float Price
         {
             get { return float.Parse(_price.Replace("usd", "")); }
@@ -63,6 +63,14 @@ namespace GoogleItems
         {
             get { return _expirationDate; }
             set { _expirationDate = value; }
+        }
+
+        private string _feedType;
+        [Url(DefaultValue = "snippets")]
+        public string FeedType
+        {
+            get { return _feedType; }
+            set { _feedType = value; }
         }
     }
 }
