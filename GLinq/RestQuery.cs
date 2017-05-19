@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Linq.Expressions;
+using System.Text;
 
 namespace GLinq
 {
@@ -70,7 +70,7 @@ namespace GLinq
 
         public TResult Execute<TResult>(Expression expression)
         {
-            return (TResult)this._context.Provider.Execute<T>(expression, _info);
+            return (TResult)this._context.Provider.Execute<T>(expression, _info);            
         }
 
         public object Execute(Expression expression)

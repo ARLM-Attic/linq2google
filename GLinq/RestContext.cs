@@ -7,8 +7,8 @@ namespace GLinq
 {
     public class RestContext
     {
-        private Provider.IProvider _provider;
-        public Provider.IProvider Provider
+        private IProvider _provider;
+        public IProvider Provider
         {
             get { return _provider; }
             protected set { _provider = value; }
@@ -16,7 +16,7 @@ namespace GLinq
 
         public RestContext()
         {
-            _provider = new Provider.RestProvider();
+            _provider = new RestProvider();
         }
     }
 }

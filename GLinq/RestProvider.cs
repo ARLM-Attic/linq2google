@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Linq.Expressions;
+using System.Text;
 using System.Net;
 using System.Xml.Linq;
 
-namespace GLinq.Provider
+namespace GLinq
 {
     public class RestProvider : IProvider
     {
@@ -14,8 +14,8 @@ namespace GLinq.Provider
 
         public IEnumerable<T> Execute<T>(Expression expression, QueryInfo info)
         {
-            string query = info.Parser.GetQuery(expression);
-            return Execute<T>(query, info);
+            string url = info.Parser.GetQuery(expression);
+            return Execute<T>(url, info);
         }
 
         private IEnumerable<T> Execute<T>(string url, QueryInfo info)
@@ -39,10 +39,10 @@ namespace GLinq.Provider
                     XElement entry = XElement.Load(reader.ReadSubtree());
                     foreach (System.Reflection.PropertyInfo prop in typeof(T).GetProperties())
                     {
-                        object[] customAttr = prop.GetCustomAttributes(typeof(AttributeItemAttribute), true);
+                        object[] customAttr = prop.GetCustomAttributes(typeof(ItemAttributeAttribute), true);
                         if (customAttr.Length == 1)
                         {
-                            AttributeItemAttribute itemAttr = customAttr[0] as AttributeItemAttribute;
+                            ItemAttributeAttribute itemAttr = customAttr[0] as ItemAttributeAttribute;
                             string targetNamespace = itemAttr.TargetNamespace ?? "";
                             string name = itemAttr.Name ?? prop.Name;
                             XElement propElement = entry.Element(XName.Get(name, targetNamespace));
@@ -93,11 +93,10 @@ namespace GLinq.Provider
             }
             finally
             {
-                if (response != null)
+                if(response != null)
                     response.Close();
             }
         }
-
         #endregion
     }
 }

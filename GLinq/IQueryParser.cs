@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
-
-namespace GLinq.Provider
+namespace GLinq
 {
-    public interface IProvider
+    public interface IQueryParser
     {
-        IEnumerable<T> Execute<T>(Expression expression, QueryInfo info);
+        string GetQuery(Expression expression);
     }
 }

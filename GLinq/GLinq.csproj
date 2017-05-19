@@ -49,17 +49,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AttributeItemAttribute.cs" />
     <Compile Include="BaseQueryAttribute.cs" />
-    <Compile Include="FeedAttribute.cs" />
     <Compile Include="Feed.cs" />
-    <Compile Include="Mapping\FeedParser.cs" />
-    <Compile Include="RestContext.cs" />
-    <Compile Include="Provider\IProvider.cs" />
-    <Compile Include="Mapping\IQueryParser.cs" />
+    <Compile Include="FeedAttribute.cs" />
+    <Compile Include="FeedParser.cs" />
+    <Compile Include="IProvider.cs" />
+    <Compile Include="IQueryParser.cs" />
+    <Compile Include="ItemAttributeAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryInfo.cs" />
-    <Compile Include="Provider\RestProvider.cs" />
+    <Compile Include="RestContext.cs" />
+    <Compile Include="RestProvider.cs" />
     <Compile Include="RestQuery.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

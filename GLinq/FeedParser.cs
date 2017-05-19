@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 
-namespace GLinq.Mapping
+namespace GLinq
 {
-    internal class FeedParser : IQueryParser
+    public class FeedParser : IQueryParser
     {
         private StringBuilder _baseQuery = new StringBuilder();
         private StringBuilder _orderbyQuery = new StringBuilder();
@@ -15,11 +15,17 @@ namespace GLinq.Mapping
         private int _skipQuery = -1;
         private string _baseURL;
 
+        public FeedParser(string baseURL)
+        {
+            _baseURL = baseURL;
+        }
+
         #region IQueryParser Members
 
         public string GetQuery(Expression expression)
         {
             ExpandExpression(expression, null);
+            
             string query = "";
             if (_baseQuery.Length > 0)
                 query += "bq=" + _baseQuery.ToString();
@@ -31,17 +37,11 @@ namespace GLinq.Mapping
                 query += String.Format("{0}max-results={1}", (query.Length > 0 ? "&" : ""), _takeQuery.ToString());
             if (_skipQuery > 0)
                 query += String.Format("{0}start-index={1}", (query.Length > 0 ? "&" : ""), _skipQuery.ToString());
-
             return _baseURL + "?" + query;
         }
 
         #endregion
-
-        public FeedParser(string baseURL)
-        {
-            _baseURL = baseURL;
-        }
-
+        
         private void Where(MethodCallExpression method)
         {
             LambdaExpression lamda = ((UnaryExpression)method.Arguments[1]).Operand as LambdaExpression;
@@ -76,7 +76,7 @@ namespace GLinq.Mapping
                     {
                         ExpandExpression(be.Right, query);
                     }
-                    else if (customAttributes[0] is AttributeItemAttribute)
+                    else if (customAttributes[0] is ItemAttributeAttribute)
                     {
                         query.Append(" [");
                         BinaryExpressionType(e as BinaryExpression, ":", query);
@@ -91,7 +91,7 @@ namespace GLinq.Mapping
                         query.Append("-");
                         ExpandExpression(be.Right, query);
                     }
-                    else if (customAttributes[0] is AttributeItemAttribute)
+                    else if (customAttributes[0] is ItemAttributeAttribute)
                     {
                         query.Append(" [");
                         BinaryExpressionType(e as BinaryExpression, "!=", query);
@@ -133,10 +133,12 @@ namespace GLinq.Mapping
                     break;
                 case ExpressionType.Constant:
                     ConstantExpression ce = e as ConstantExpression;
-                    if (ce.Type == typeof(DateTime))
-                        query.Append(" " + ((DateTime)ce.Value).ToUniversalTime().ToString("yyyy-MM-ddThh:mm:ssZ"));
-                    else
+                    if(ce.Type == typeof(string))
                         query.Append(" " + ce.Value);
+                    else if(ce.Type == typeof(DateTime))
+                        query.Append(((DateTime)ce.Value).ToUniversalTime().ToString("yyyy-MM-ddThh:mm:ssZ"));
+                    else
+                        query.Append(ce.Value.ToString());
                     break;
                 case ExpressionType.Call:
                     MethodCallExpression(e as MethodCallExpression, query);
@@ -155,7 +157,7 @@ namespace GLinq.Mapping
         private void MemberAccessType(MemberExpression e, StringBuilder query)
         {
             object[] customAttributes = e.Member.GetCustomAttributes(true);
-            AttributeItemAttribute itemAttr = (AttributeItemAttribute)customAttributes.FirstOrDefault(attr => attr is AttributeItemAttribute);
+            ItemAttributeAttribute itemAttr = (ItemAttributeAttribute)customAttributes.FirstOrDefault(attr => attr is ItemAttributeAttribute);
             BaseQueryAttribute baseAttr = (BaseQueryAttribute)customAttributes.FirstOrDefault(attr => attr is BaseQueryAttribute);
             if (itemAttr != null)
             {
@@ -179,35 +181,31 @@ namespace GLinq.Mapping
             {
                 MethodCallExpression(e.Arguments[0] as MethodCallExpression, query);
             }
-
-            if (e.Object != null)
+            if(e.Object != null)
                 ExpandExpression(Expression.Constant(Expression.Lambda(e, null).Compile().DynamicInvoke(null)), query);
-            else
+            switch (e.Method.Name.ToLower())
             {
-                switch (e.Method.Name.ToLower())
-                {
-                    case "select":
-                        break;
-                    case "where":
-                        Where(e);
-                        break;
-                    case "orderby":
-                        OrderBy(e);
-                        SortOrder("ascending");
-                        break;
-                    case "orderbydescending":
-                        OrderBy(e);
-                        SortOrder("descending");
-                        break;
-                    case "take":
-                        Take(e);
-                        break;
-                    case "skip":
-                        Skip(e);
-                        break;
-                    default:
-                        throw new Exception("Not supported");
-                }
+                case "select":
+                    break;
+                case "where":
+                    Where(e);
+                    break;
+                case "orderby":
+                    OrderBy(e);
+                    SortOrder("ascending");
+                    break;
+                case "orderbydescending":
+                    OrderBy(e);
+                    SortOrder("descending");
+                    break;
+                case "take":
+                    Take(e);
+                    break;
+                case "skip":
+                    Skip(e);
+                    break;
+                default:
+                    throw new Exception("Not supported");
             }
         }
     }

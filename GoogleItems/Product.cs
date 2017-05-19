@@ -6,11 +6,11 @@ using GLinq;
 
 namespace GoogleItems
 {
-    [Feed(BaseURL = "http://www.google.com/base/feeds/snippets/-/products")]
+    [Feed(BaseURL = "http://www.google.com/base/feeds/snippets")]
     public class Product : GoogleBase
     {
         private string _id;
-        [AttributeItem(Name = "id", TargetNamespace = "http://www.w3.org/2005/Atom")]
+        [ItemAttribute(Name = "id", TargetNamespace = "http://www.w3.org/2005/Atom")]
         public string Id
         {
             get { return _id; }
@@ -18,7 +18,7 @@ namespace GoogleItems
         }
 
         private string _title;
-        [AttributeItem(Name = "title", TargetNamespace = "http://www.w3.org/2005/Atom")]
+        [ItemAttribute(Name = "title", TargetNamespace = "http://www.w3.org/2005/Atom")]
         public string Title
         {
             get { return _title; }
@@ -26,7 +26,7 @@ namespace GoogleItems
         }
 
         private string _brand;
-        [AttributeItem(Name = "brand", TargetNamespace = "http://base.google.com/ns/1.0")]
+        [ItemAttribute(Name = "brand", TargetNamespace = "http://base.google.com/ns/1.0")]
         public string Brand
         {
             get { return _brand; }
@@ -34,7 +34,7 @@ namespace GoogleItems
         }
 
         private string _price;
-        [AttributeItem(Name = "price", TargetNamespace = "http://base.google.com/ns/1.0", Storage = "_price", ItemType = "float usd")]
+        [ItemAttribute(Name = "price", TargetNamespace = "http://base.google.com/ns/1.0", Storage = "_price", ItemType = "float usd")]
         public float Price
         {
             get { return float.Parse(_price.Replace("usd", "")); }
@@ -42,7 +42,7 @@ namespace GoogleItems
         }
 
         private string _itemType;
-        [AttributeItem(Name = "item_type", TargetNamespace = "http://base.google.com/ns/1.0")]
+        [ItemAttribute(Name = "item_type", TargetNamespace = "http://base.google.com/ns/1.0")]
         public string ItemType
         {
             get { return _itemType; }
@@ -50,7 +50,7 @@ namespace GoogleItems
         }
 
         private string _itemLanguage;
-        [AttributeItem(Name = "item_language", TargetNamespace = "http://base.google.com/ns/1.0")]
+        [ItemAttribute(Name = "item_language", TargetNamespace = "http://base.google.com/ns/1.0")]
         public string ItemLanguage
         {
             get { return _itemLanguage; }
@@ -58,7 +58,7 @@ namespace GoogleItems
         }
 
         private DateTime _expirationDate;
-        [AttributeItem(Name = "expiration_date", TargetNamespace = "http://base.google.com/ns/1.0", ItemType="daterange")]
+        [ItemAttribute(Name = "expiration_date", TargetNamespace = "http://base.google.com/ns/1.0")]
         public DateTime ExpirationDate
         {
             get { return _expirationDate; }

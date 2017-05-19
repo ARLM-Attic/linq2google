@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 
-namespace GLinq.Mapping
+namespace GLinq
 {
-    public interface IQueryParser
+    public interface IProvider
     {
-        string GetQuery(Expression expression);
+         IEnumerable<T> Execute<T>(Expression expression, QueryInfo info);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Linq.Expressions;
+using System.Text;
 
 namespace GLinq
 {
@@ -10,7 +10,6 @@ namespace GLinq
     {
         private RestContext _context;
         private QueryInfo _info;
-
         public QueryInfo Info
         {
             get { return _info; }
@@ -19,21 +18,20 @@ namespace GLinq
         public Feed(RestContext context)
         {
             _context = context;
-            _info = new QueryInfo();
-            object[] attr = typeof(T).GetCustomAttributes(typeof(FeedAttribute), true);
-            if (attr.Length == 1)
+            object[] attrs = typeof(T).GetCustomAttributes(typeof(FeedAttribute), true);
+            if(attrs.Length == 1)
             {
-                FeedAttribute tempAttr = attr[0] as FeedAttribute;
-                if (String.IsNullOrEmpty(tempAttr.BaseURL))
-                    throw new Exception("A FeedAttribute must specify the base url");
-
-                if (tempAttr.QueryParser != null)
-                    _info.Parser = (Mapping.IQueryParser)Activator.CreateInstance(tempAttr.QueryParser, tempAttr.BaseURL);
+                FeedAttribute feedAttr = attrs[0] as FeedAttribute;
+                if(!string.IsNullOrEmpty(feedAttr.BaseURL))
+                {
+                    _info = new QueryInfo((IQueryParser)Activator.CreateInstance(feedAttr.QueryParser, feedAttr.BaseURL));
+                }
                 else
-                    _info.Parser = new Mapping.FeedParser(tempAttr.BaseURL);
+                    throw new Exception("The BaseURL must be specified for attribute " + typeof(FeedAttribute).Name);
             }
             else
-                throw new Exception("A Feed query requires the object " + typeof(T).Name + " to have an attribute of type " + typeof(FeedAttribute).Name);
+                throw new Exception("The type " + typeof(T).Name + " does not have an attribute of type " + typeof(FeedAttribute).Name);
+            
         }
 
         #region IEnumerable<T> Members
@@ -68,7 +66,7 @@ namespace GLinq
 
         public IQueryProvider Provider
         {
-            get
+            get 
             {
                 return this;
             }

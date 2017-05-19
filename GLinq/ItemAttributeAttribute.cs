@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GLinq
 {
-    public class AttributeItemAttribute : Attribute
+    public class ItemAttributeAttribute : Attribute
     {
         private string _itemType;
         public string ItemType
