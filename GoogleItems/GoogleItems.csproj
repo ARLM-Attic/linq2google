@@ -45,7 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AtomEntry.cs" />
     <Compile Include="GoogleBase.cs" />
     <Compile Include="GoogleContext.cs" />
     <Compile Include="Product.cs" />
