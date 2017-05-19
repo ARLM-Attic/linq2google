@@ -8,19 +8,6 @@ namespace GLinq
 {
     public class QueryInfo
     {
-        private IQueryParser _parser;
-        public IQueryParser Parser
-        {
-            get { return _parser; }
-        }
-
-        private string _baseURL;
-        public string BaseURL
-        {
-            get { return _baseURL; }
-            set { _baseURL = value; }
-        }
-
         private WebHeaderCollection _customHeaders = new WebHeaderCollection();
         public WebHeaderCollection CustomHeaders
         {
@@ -41,9 +28,8 @@ namespace GLinq
             set { _contentType = value; }
         }
 
-        public QueryInfo(IQueryParser parser)
+        public QueryInfo()
         {
-            _parser = parser;
         }
     }
 }

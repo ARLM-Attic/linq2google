@@ -6,13 +6,13 @@ using GLinq;
 
 namespace GoogleItems
 {
-    public class YouTubeContext : RestContext
+    public class YouTubeContext : WebContext
     {
-        public Feed<YouTubeVideo> videos;
+        public WebRequest<YouTubeVideo> videos;
 
         public YouTubeContext()
         {
-            videos = new Feed<YouTubeVideo>(this);
+            videos = new WebRequest<YouTubeVideo>(this);
             videos.Info.ContentType = "application/atom+xml";
             videos.Info.Method = "GET";
         }

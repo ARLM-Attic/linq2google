@@ -35,7 +35,13 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Net">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel.Web">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web" />
@@ -50,22 +56,40 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AtomEntry.cs" />
-    <Compile Include="AtomFeedSerializer.cs" />
+    <Compile Include="WebProjectionReader.cs" />
     <Compile Include="BaseQueryAttribute.cs" />
-    <Compile Include="Feed.cs" />
-    <Compile Include="FeedAttribute.cs" />
-    <Compile Include="FeedInfo.cs" />
-    <Compile Include="FeedParser.cs" />
+    <Compile Include="Evaluator.cs" />
+    <Compile Include="ExpressionVisitor.cs" />
+    <Compile Include="Mapping\PropertyMapping.cs" />
+    <Compile Include="Mapping\QueryMapping.cs" />
+    <Compile Include="Mapping\QueryMappingFactory.cs" />
+    <Compile Include="Syndication\Feed.cs" />
+    <Compile Include="Syndication\FeedAttribute.cs" />
+    <Compile Include="Syndication\FeedContext.cs" />
+    <Compile Include="Syndication\FeedItem.cs" />
+    <Compile Include="Syndication\FeedProjectionBuilder.cs" />
+    <Compile Include="Syndication\FeedProjectionReader.cs" />
+    <Compile Include="Syndication\FeedProvider.cs" />
+    <Compile Include="Syndication\FeedQuery.cs" />
     <Compile Include="IProvider.cs" />
-    <Compile Include="IQueryParser.cs" />
     <Compile Include="ItemAttributeAttribute.cs" />
+    <Compile Include="ProjectionBuilder.cs" />
+    <Compile Include="ProjectionRow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryBinder.cs" />
+    <Compile Include="QueryFormatter.cs" />
     <Compile Include="QueryInfo.cs" />
+    <Compile Include="QueryParamProjector.cs" />
     <Compile Include="QueryStringParamAttribute.cs" />
-    <Compile Include="RestContext.cs" />
-    <Compile Include="RestProvider.cs" />
-    <Compile Include="RestQuery.cs" />
+    <Compile Include="WebContext.cs" />
+    <Compile Include="WebExpressionType.cs" />
+    <Compile Include="WebExpressionVisitor.cs" />
+    <Compile Include="WebProvider.cs" />
+    <Compile Include="WebQuery.cs" />
+    <Compile Include="TypeSystem.cs" />
     <Compile Include="UrlAttribute.cs" />
+    <Compile Include="UrlParamProjector.cs" />
+    <Compile Include="WebRequest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

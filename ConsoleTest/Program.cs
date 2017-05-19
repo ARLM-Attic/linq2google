@@ -10,7 +10,7 @@ namespace ConsoleTest
         static void Main(string[] args)
         {
             Program p = new Program();
-            p.LoginProductsTest();
+            p.ProductsTest();
             Console.ReadKey(true);
         }
         private void ProductsTest()
@@ -19,21 +19,35 @@ namespace ConsoleTest
             Console.WriteLine("Enter your Google Base API key.  If you do not have one, its easy - http://code.google.com/apis/base/signup.html");
             Console.Write("key:");
             string key = Console.ReadLine();
+
+            //Execute a search using the WebRequest classes
+            Console.WriteLine("Execute a search using the WebRequest classes");
             GoogleItems.GoogleContext gc = new GoogleItems.GoogleContext(key);
             var r = from ipods in gc.products
-                    where ipods.BaseQuery == "mp3 players" && ipods.BaseQuery == "apple"
-                    where ipods.Price > 200
-                    orderby ipods.Price descending
-                    select ipods;
+                    where ipods.BaseQuery == "mp3 players" && ipods.Brand == "apple" && ipods.FeedType == "snippets"
+                    select new { ipods.Title, ipods.Price };
 
-            //The feed does not have any changes yet - the update time has not been changed
-            Console.WriteLine(gc.products.Updated.ToLocalTime());
-            foreach (GoogleItems.Product product in r.Skip(10).Take(100))
+            foreach (var product in r.Skip(10).Take(100))
             {
                 Console.WriteLine("{0} for ${1}", product.Title, product.Price.ToString("#.##"));
             }
-            //Now the feed has changes once we have made the query
-            Console.WriteLine(gc.products.Updated.ToLocalTime());
+
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey(true);
+            
+            //Execute a search using the Syndication (Feed) classes
+            Console.WriteLine("Execute a search using the Syndication (Feed) classes");
+            GoogleItems.Syndication.GoogleContext sgc = new GoogleItems.Syndication.GoogleContext(key);
+            var s = from ipods in sgc.Products
+                    where ipods.BaseQuery == "mp3 players" && ipods.FeedType == "snippets"
+                    select new { ipods.Title, ipods.Categories };
+
+            foreach (var product in s)
+            {
+                Console.WriteLine("{0} has {1} category", product.Title.Text, product.Categories.Count);
+                foreach (var category in product.Categories)
+                    Console.WriteLine("    " + category.Name);
+            }
         }
         private void LoginProductsTest()
         {
@@ -47,14 +61,10 @@ namespace ConsoleTest
                     where ipods.FeedType == "items"
                     select ipods;
 
-            //The feed does not have any changes yet - the update time has not been changed
-            Console.WriteLine(gc.products.Updated.ToLocalTime());
             foreach (GoogleItems.Product product in r.Skip(10).Take(100))
             {
                 Console.WriteLine("{0} for ${1}", product.Title, product.Price.ToString("#.##"));
             }
-            //Now the feed has changes once we have made the query
-            Console.WriteLine(gc.products.Updated.ToLocalTime());
         }
         private void YouTubeTest()
         {
@@ -63,14 +73,10 @@ namespace ConsoleTest
                     where videos.VideoQuery == "dog" && videos.VideoQuery == "cat"
                     select videos;
 
-            //The feed does not have any changes yet - the update time has not been changed
-            Console.WriteLine(gc.videos.Updated.ToLocalTime());
             foreach (GoogleItems.YouTubeVideo video in r.Take(2))
             {
                 Console.WriteLine("{0}", video.Title);
             }
-            //Now the feed has changes once we have made the query
-            Console.WriteLine(gc.videos.Updated.ToLocalTime());
         }
 
         public string DoLogin(string service)

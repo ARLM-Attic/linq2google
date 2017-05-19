@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GLinq
 {
-    public class RestContext
+    public class WebContext
     {
         private IProvider _provider;
         public IProvider Provider
@@ -14,9 +14,9 @@ namespace GLinq
             protected set { _provider = value; }
         }
 
-        public RestContext()
+        public WebContext()
         {
-            _provider = new RestProvider();
+            _provider = new WebProvider();
         }
     }
 }

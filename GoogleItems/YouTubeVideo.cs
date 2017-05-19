@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GLinq;
+using System.ServiceModel.Syndication;
 
 namespace GoogleItems
 {
-    [Feed(BaseURL = "http://gdata.youtube.com/feeds/api/videos")]
+    [Feed(BaseUri = "http://gdata.youtube.com", UriTemplate = "feeds/api/videos")]
     public class YouTubeVideo : AtomEntry
     {
         private string _userName;
@@ -25,4 +26,5 @@ namespace GoogleItems
             set { _vq = value; }
         }
     }
+
 }

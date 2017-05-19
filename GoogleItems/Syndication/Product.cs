@@ -2,29 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ServiceModel.Syndication;
 using GLinq;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+using System.Reflection;
 
-namespace GoogleItems
+namespace GoogleItems.Syndication
 {
-    [Feed(BaseUri = "http://www.google.com", UriTemplate = "base/feeds/{FeedType}", DefaultParameterName="bq")]
-    public class Product : GoogleBase
+    [Feed(BaseUri = "http://www.google.com", UriTemplate = "base/feeds/{FeedType}", DefaultParameterName = "bq")]
+    public class Product : GLinq.Syndication.FeedItem
     {
-        private string _id;
-        [ItemAttribute(Name = "id", TargetNamespace = "http://www.w3.org/2005/Atom")]
-        public string Id
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
-
-        private string _title;
-        [ItemAttribute(Name = "title", TargetNamespace = "http://www.w3.org/2005/Atom")]
-        public string Title
-        {
-            get { return _title; }
-            set { _title = value; }
-        }
-
         private string _brand;
         [ItemAttribute(Name = "brand", TargetNamespace = "http://base.google.com/ns/1.0")]
         public string Brand
@@ -35,7 +23,7 @@ namespace GoogleItems
 
         private float _price;
         [System.ComponentModel.TypeConverter(typeof(FloatUsdConverter))]
-        [ItemAttribute(Name = "price", TargetNamespace = "http://base.google.com/ns/1.0", ItemType = "float usd", ParameterName="bq")]
+        [ItemAttribute(Name = "price", TargetNamespace = "http://base.google.com/ns/1.0", ItemType = "float usd", ParameterName = "bq")]
         public float Price
         {
             get { return _price; }
@@ -73,6 +61,14 @@ namespace GoogleItems
         {
             get { return _feedType; }
             set { _feedType = value; }
+        }
+
+        private string _bq;
+        [BaseQuery(ParameterName = "bq")]
+        public string BaseQuery
+        {
+            get { return _bq; }
+            set { _bq = value; }
         }
 
         internal class FloatUsdConverter : System.ComponentModel.TypeConverter

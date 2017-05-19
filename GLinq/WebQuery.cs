@@ -6,13 +6,13 @@ using System.Text;
 
 namespace GLinq
 {
-    internal class RestQuery<T> : IOrderedQueryable<T>, IQueryable<T>, IQueryProvider
+    internal class WebQuery<T> : IOrderedQueryable<T>, IQueryable<T>, IQueryProvider
     {
-        private RestContext _context;
+        private WebContext _context;
         private Expression _expression;
         private QueryInfo _info;
 
-        public RestQuery(RestContext context, QueryInfo info, Expression expression)
+        public WebQuery(WebContext context, QueryInfo info, Expression expression)
         {
             _context = context;
             _expression = expression;
@@ -42,7 +42,7 @@ namespace GLinq
 
         public System.Collections.IEnumerator GetEnumerator()
         {
-            throw new NotImplementedException();
+            return this.Execute<IEnumerable<T>>(this._expression).GetEnumerator();
         }
 
         #endregion
@@ -60,24 +60,29 @@ namespace GLinq
 
         public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
-            return new RestQuery<TElement>(_context, _info, expression);
+            return (IQueryable<TElement>)Activator.CreateInstance(this.GetType().GetGenericTypeDefinition().MakeGenericType(typeof(TElement)), _context, _info, expression);
         }
 
         public IQueryable CreateQuery(Expression expression)
         {
-            throw new NotImplementedException();
+            return (IQueryable)Activator.CreateInstance(typeof(WebQuery<>).MakeGenericType(typeof(T)), _context, _info, expression);
         }
 
         public TResult Execute<TResult>(Expression expression)
         {
-            return (TResult)this._context.Provider.Execute<T>(expression, _info);            
+            return (TResult)this._context.Provider.Execute(expression, _info);            
         }
 
         public object Execute(Expression expression)
         {
-            return this._context.Provider.Execute<T>(expression, _info);
+            return this._context.Provider.Execute(expression, _info);
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            return _context.Provider.GetQueryText(this.Expression);
+        }
     }
 }

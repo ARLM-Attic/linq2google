@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GLinq;
+using GLinq.Syndication;
 
-namespace GoogleItems
+namespace GoogleItems.Syndication
 {
-    public class GoogleContext : WebContext
+    public class GoogleContext : FeedContext
     {
-        public WebRequest<Product> products;
+        public Feed<Product> Products;
 
         public GoogleContext(string googleKey)
         {
@@ -20,11 +20,11 @@ namespace GoogleItems
         }
         private void Init(string googleKey, string auth, string contentType, string method)
         {
-            products = new WebRequest<Product>(this);
-            products.Info.CustomHeaders["Authorization"] = "GoogleLogin auth=\"" + auth + "\"";
-            products.Info.CustomHeaders["X-Google-Key"] = "key=" + googleKey;
-            products.Info.ContentType = contentType;
-            products.Info.Method = method;
+            Products = new Feed<Product>(this);
+            Products.Info.CustomHeaders["Authorization"] = "GoogleLogin auth=\"" + auth + "\"";
+            Products.Info.CustomHeaders["X-Google-Key"] = "key=" + googleKey;
+            Products.Info.ContentType = contentType;
+            Products.Info.Method = method;
         }
     }
 }
