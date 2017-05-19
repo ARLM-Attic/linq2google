@@ -53,7 +53,7 @@
       <Project>{418FB735-7430-4210-AD6C-2930676C0E13}</Project>
       <Name>GLinq</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SampleGoogleItems\GoogleItems.csproj">
+    <ProjectReference Include="..\GoogleItems\GoogleItems.csproj">
       <Project>{A2F89FEA-6316-4FF2-8954-B954E01073B0}</Project>
       <Name>GoogleItems</Name>
     </ProjectReference>

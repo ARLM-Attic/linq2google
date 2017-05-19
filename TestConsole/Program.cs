@@ -9,7 +9,8 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            GoogleItems.GoogleContext gc = new GoogleItems.GoogleContext("ABQIAAAAxKRZqmZvVzQVA-YxoFpyshT2yXp_ZAY8_ufC3CFXhHIE1NvwkxRCRRXzn1cmOT8pZPc1geUX6QNyjg");
+            //You will need a google key.  Easy to get here - http://code.google.com/apis/base/signup.html
+            GoogleItems.GoogleContext gc = new GoogleItems.GoogleContext(YourGoogleKey);
             var r = from ipods in gc.products
                     where ipods.BaseQuery == "mp3 players ipod video" && ipods.Brand == "apple"
                     where ipods.Price < 600
